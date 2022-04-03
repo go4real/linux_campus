@@ -1,0 +1,144 @@
+# 디버그용 docker compose 작성
+vim docker-compose.debug.yml 
+
+"""
+version: "3"
+   
+services:
+  db:
+    image: postgres
+    volumes:
+      - poll-db-volume:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=poll
+      - POSTGRES_USER=fast
+      - POSTGRES_PASSWORD=1234qwer
+
+  app:
+    #image: poll_app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:8000 --nothreading --noreload"]
+    ports:
+      - 8000:8000
+      - 5678:5678
+    volumes:
+      - ./:/app
+    environment:
+      - POSTGRES_DB=poll
+      - POSTGRES_USER=fast
+      - POSTGRES_PASSWORD=1234qwer
+      - POSTGRES_HOST=db
+    depends_on:
+      - db
+    
+  web:
+    image: poll_web
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  poll-db-volume:
+    external: true
+    name:
+      poll-db-volume
+"""
+
+# 디버그를 위한 Visual Studio 셋팅 추가
+vim .vscode/launch.json
+"""
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Remote Attach",
+      "type": "python",
+      "request": "attach",
+      "port": 5678,
+      "host": "localhost",
+      "pathMappings": [
+          {
+              "localRoot": "${workspaceFolder}",
+              "remoteRoot": "/app"
+          }
+      ]
+    }
+  ]
+}
+"""
+
+vim .vscode/tasks.json
+"""
+{
+  "tasks": [
+    {
+      "type": "docker-run",
+      "label": "docker-run: debug",
+      "dependsOn": [
+          "docker-build"
+      ],
+      "python": {
+          "args": [
+              "runserver",
+              "0.0.0.0:8000",
+              "--nothreading",
+              "--noreload"
+          ],
+          "file": "manage.py"
+      }
+    },
+    {
+      "type": "docker-build",
+      "label": "docker-build",
+      "platform": "python",
+      "dockerBuild": {
+          "tag": "djangopollapp:latest",
+          "dockerfile": "${workspaceFolder}/Dockerfile",
+          "context": "${workspaceFolder}",
+          "pull": true
+      }
+    }
+  ]
+}
+"""
+
+# Docker compose 실행
+docker-compose -f docker-compose.debug.yml up -d --build
+
+# VS code에서 디버깅 정보 확인
+
+# 코드 반영 내용 실시간 확인을 위한 구성 
+vim docker-compose.debug.yml 
+# 기존 
+# command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:8000 --nothreading --noreload"]
+
+# 변경
+"""
+
+...
+command: ["sh", "-c", "pip install debugpy -t /tmp && python /tmp/debugpy --wait-for-client --listen 0.0.0.0:5678 manage.py runserver 0.0.0.0:8000 --nothreading"]
+...
+
+"""
+
+# 새로운 설정 적용
+docker-compose -f docker-compose.debug.yml up -d --build
+
+
+# 실시간 반영 정보 확인 위해 poll 리스트의 pagination 갯수 변경
+vim polls/views.py
+
+"""
+# 기존 (라인 6)
+# paginator = Paginator(all_polls, 6)  # Show 6 contacts per page 
+
+# 변경
+paginator = Paginator(all_polls, 3)  # Show 6 contacts per page 
+"""
+
+# 브라우저에서 Poll 리스트 갯수 확인 
+
+

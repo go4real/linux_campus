@@ -94,3 +94,5 @@ docker-compose up
 docker build --tag poll_app .
 docker build --tag poll_web -f nginx/Dockerfile .
 
+# 브라우즈로 앱 정상 동작여부 확인 --> 성공
+
