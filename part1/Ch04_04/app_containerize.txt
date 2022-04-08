@@ -1,0 +1,53 @@
+# Dockerfile 작성
+"""
+FROM python:3.8-slim-buster
+
+ENV PYTHONUNBUFFERED 1
+ENV PYTHONDONTWRITEBYTECODE 1
+
+RUN apt-get update \
+  && apt-get install -y gcc libpq-dev python-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+COPY . .
+
+EXPOSE 8000
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+"""
+
+# Docker 이미지 빌드
+docker build --tag poll_app .
+
+# 빌드된 이미지 실행 
+docker run --rm --name poll poll_app
+
+# 오류 메시지 확인
+"""
+django.db.utils.OperationalError: could not connect to server: Connection refused
+        Is the server running on host "127.0.0.1" and accepting
+        TCP/IP connections on port 5432?
+"""
+
+# 로컬 호스트 IP 확인
+ip address show eth0
+
+# Django config에 Database 호스트 정보 수정하기 (환경변수로 빼는 작업은 추후 진행)
+# projects/Django-Poll-App/pollme/settings.py
+
+# Docker 이미지 빌드
+docker build --tag poll_app .
+
+# 빌드된 이미지 실행 
+docker run --rm --name poll poll_app
+
+# 브라우저로 접속 여부 확인 --> 접속 실패
+# 열린 포트 정보 확인
+sudo ss -tulpn
+
+# 빌드된 이미지 실행 
+docker run -p 8000:8000 --rm --name poll poll_app
+
+

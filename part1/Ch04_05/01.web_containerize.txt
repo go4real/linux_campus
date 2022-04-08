@@ -1,0 +1,78 @@
+# App 서버 
+
+# gunicorn 모듈 설치
+# projects/Django-Poll-App/requirements.txt 에 아래 내용 추가
+gunicorn==20.1.0
+
+# Django-Poll-App 내 Dockerfile 정보 변경 
+# 변경전 >>  CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"] 
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "pollme.wsgi:application"]
+
+# poll 이미지 새로 생성
+docker build --tag poll_app .
+
+# 빌드된 이미지 실행 
+docker run -p 8000:8000 --rm --name poll poll_app
+
+# 브라우저 접속 확인
+
+# detach 모드로 Poll 애플리케이션 구동
+docker run -d -p 8000:8000 --rm --name poll poll_app
+
+## web 서버 추가
+# nginx 디렉토리 생성
+mkdir -p nginx/config && cd nginx
+
+# nginx config 파일 작성
+vim config/nginx.conf
+
+"""
+events {
+  worker_connections  4096;  ## Default: 1024
+}
+http {
+    charset utf-8;
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    server {
+        listen      80;
+        server_name localhost; # IP 또는 FQDN으로 변경. 실습에서는 AWS 콘솔에서 IP 확인
+        charset     utf-8;
+
+        # max upload size
+        client_max_body_size 75M;   # adjust to taste
+
+        location /static/ {
+            alias /data/static/; # Django 프로젝트의 static 파일 위치. 실습에서는 Dockerfile에서 지정.
+        }
+
+        location / {
+            # 실습에서는 host의 private ip 사용 ($ ip address show eth0)
+            proxy_pass              http://app:8000;  
+            proxy_set_header        Host $host;
+        }
+    }
+}
+"""
+
+# 웹 서버용 Dockerfile 작성
+vim Dockerfile
+"""
+FROM nginx
+COPY nginx/config/nginx.conf /etc/nginx/nginx.conf
+COPY static /data/static
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+"""
+
+# 웹서버 이미지 빌드
+cd $PROJECT_ROOT
+docker build --tag poll_web -f nginx/Dockerfile .
+
+# 웹서버 실행
+docker run -rm -p 80:80 --name poll_web poll_web
+
+# 브라우저에서 앱 동작 확인 
