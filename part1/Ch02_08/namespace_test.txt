@@ -10,10 +10,10 @@ mount | grep /mnt
 
 # 테스트 파일 생성
 echo "Hello" > /mnt/hello
-cat /mnt/hello
+cat /mnt/hello.txt
 
 # Terminal을 새로 열어서 테스트 파일 내용 확인
-cat /mnt/hello
+cat /mnt/hello.txt
 
 # mount namespace 종료
 exit
