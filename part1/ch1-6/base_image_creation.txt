@@ -1,4 +1,7 @@
-# tar 파일을 이용해 풀 이미지 만들기
+# AlpineFedora 이미지 만들기
+
+# fedora package update 실행
+docker run --rm fedora yum update
 
 # Alpine Linux용 루트파일 시스템 다운로드
 # https://hub.docker.com/
@@ -16,16 +19,16 @@ ls -lh alpine_root/
 vim Dockerfile
 
 """
-FROM scratch
+FROM fedora
 COPY ./alpine_root /
 CMD ["/bin/sh"]
 """
 
 # 기본 알파인 이미지 생성
-docker build --tag my_alpine .
+docker build --tag alpine_fedora .
 
 # 생성된 이미지 확인
 docker images
 
 # 이미지 실행하여 os 정보 확인 
-docker run --rm my_alpine cat /etc/os-release
+docker run --rm alpine_fedora apk update
