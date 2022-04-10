@@ -2,7 +2,9 @@
 unshare --help
 
 # 새로운 mount namespace 생성
+echo $$
 unshare -m /bin/bash
+echo $$
 
 # tmpfs 마운트
 mount -t tmpfs tmpfs /mnt
@@ -14,7 +16,7 @@ cat /mnt/hello.txt
 
 # Terminal을 새로 열어서 테스트 파일 내용 확인
 cat /mnt/hello.txt
-nsenter -t $TARGET_PID -m ls /mnt
+nsenter -t $TARGET_PID -a
 
 # mount namespace 종료
 exit
