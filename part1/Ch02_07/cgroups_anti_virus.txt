@@ -1,5 +1,8 @@
 # ClamAV 설치
 sudo apt install -y clamav 
+sudo systemctl stop clamav-daemon
+sudo systemctl disable clamav-daemon
+
 
 # ClamAV 설치 확인
 clamscan --version
