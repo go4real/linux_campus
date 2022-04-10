@@ -1,4 +1,5 @@
 # CPU stress 테스트 툴 설치
+sudo apt update
 sudo apt install -y stress
 
 # test용 cgroup 생성
@@ -12,7 +13,7 @@ echo $$ > tasks
 echo 10000 > cpu.cfs_quota_us
 
 # stress test 실행
-stress –c 
+stress -c 1
 
 # 새로운 창에서 CPU 사용량 정보 확인
 top
