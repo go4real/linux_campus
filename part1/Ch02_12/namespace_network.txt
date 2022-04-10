@@ -48,12 +48,12 @@ ip netns exec ns1 ip link set ceth0 up
 ip netns exec ns2 ip link set ceth1 up
 
 # ns*의 ceth* 인터페이스에 IP 할당
-ip netns exec ns1 ip addr add 192.168.2.1/24 dev ceth0
-ip netns exec ns2 ip addr add 192.168.2.2/24 dev ceth1
+ip netns exec ns1 ip addr add 192.168.2.2/24 dev ceth0
+ip netns exec ns2 ip addr add 192.168.2.3/24 dev ceth1
 
 # ns2의 네트워크 인터페이스 확인
 ip netns exec ns2 ip addr
 
 # ns1에서 ns2로 연결
-ip netns exec ns1 ping -c 2 192.168.2.2
+ip netns exec ns1 ping -c 2 192.168.2.3
 
