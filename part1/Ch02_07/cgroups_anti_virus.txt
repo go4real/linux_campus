@@ -1,24 +1,18 @@
-# ClamAV 설치
-sudo apt install -y clamav 
-sudo systemctl stop clamav-daemon
-sudo systemctl disable clamav-daemon
-
-
-# ClamAV 설치 확인
-clamscan --version
+# CPU stress 테스트 툴 설치
+sudo apt install -y stress
 
 # test용 cgroup 생성
 sudo su
 cd /sys/fs/cgroup/cpu
-mkdir clam_test
-cd clam_test
+mkdir utils
+cd utils
 echo $$ > tasks
 
 # cfs quota 설정
 echo 10000 > cpu.cfs_quota_us
 
-# live scan 실행
-clamscan --infected --recursive --remove /
+# stress test 실행
+stress –c 
 
 # 새로운 창에서 CPU 사용량 정보 확인
 top
