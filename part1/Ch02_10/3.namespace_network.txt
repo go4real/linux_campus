@@ -1,0 +1,59 @@
+# 실습에 루트 권한 필요 
+sudo su
+
+# 새로운 네트워크 네임스페이스 생성 
+ip netns add ns1
+ip netns add ns1
+
+# 네트워크 네임스페이스 생성 확인
+ip netns list
+
+# 네임스페이스 내의 모든 인터페이스 정보 확인
+ip netns exec ns1 ip link
+ip netns exec ns2 ip link
+ip netns exec ns1 ip link set lo up
+ip netns exec ns2 ip link set lo up
+
+# 브릿지 정보 확인
+ip link show type bridge
+
+# 호스트에 새로운 브릿지 네트워크 인터페이스 생성
+ip link add br0 type bridge
+ip link set br0 up
+
+# 브릿지 네트워크에 IP 설정
+ip addr add 192.168.2.1/24 dev br0
+ip addr
+ping -c 192.168.2.1
+
+# veth*, ceth*를 위한 veth 페어 생성
+ip link add veth0 type veth peer name ceth0
+ip link add veth1 type veth peer name ceth1
+
+# veth0를 br0에 연결
+ip link set veth0 master br0
+ip link set veth1 master br0
+# veth0 시작
+ip link set veth0 up 
+ip link set veth1 up 
+
+# ceth*를 ns* 네임스페이스에 연결
+ip link set ceth0 netns ns1
+ip link set ceth1 netns ns2
+
+# ceth* 시작 
+ip netns exec ip set ceth0 up 
+ip netns exec ip set ceth1 up 
+ip netns exec ns1 ip link set ceth0 up
+ip netns exec ns2 ip link set ceth1 up
+
+# ns*의 ceth* 인터페이스에 IP 할당
+ip netns exec ns1 ip addr add 192.168.2.1/24 dev ceth0
+ip netns exec ns2 ip addr add 192.168.2.2/24 dev ceth1
+
+# ns2의 네트워크 인터페이스 확인
+ip netns exec ns2 ip addr
+
+# ns1에서 ns2로 연결
+ip netns exec ns1 ping -c 2 192.168.2.2
+

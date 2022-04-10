@@ -1,0 +1,21 @@
+# test용 cgroup 생성
+sudo su
+cd /sys/fs/cgroup/pid
+mkdir police
+cd police
+echo $$ > tasks
+
+# 프로세스 생성 갯수 제한
+echo 10 > pids.max
+
+# fork bomb 실행 
+:(){ :|:& };:
+
+# 생성 프로세스 확인 
+ps aux
+
+# 프로세스 생성 갯수 제한
+echo 20 > pids.max
+
+# 생성 프로세스 확인 
+ps aux
