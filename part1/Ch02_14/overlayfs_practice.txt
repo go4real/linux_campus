@@ -24,7 +24,7 @@ mount | grep overlay
 touch /tmp/merged/aa 
 
 # 디렉토리 언마운트
-sudo umount /mnt/merged 
+sudo umount /tmp/merged 
 
 # 디렉토리 마운트 
 sudo mount \
@@ -40,4 +40,4 @@ touch /tmp/merged/aa
 ls -l /tmp/upper
 
 # 디렉토리 언마운트
-sudo umount /mnt/merged 
+sudo umount /tmp/merged 
