@@ -1,3 +1,6 @@
+# 도커 플러그인 설치 
+
+
 # 디버그용 docker compose 작성
 vim docker-compose.debug.yml 
 
