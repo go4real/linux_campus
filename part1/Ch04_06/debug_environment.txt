@@ -1,5 +1,7 @@
-# 도커 플러그인 설치 
+# Scale UP
 
+# 도커 플러그인 설치 
+# docker, python
 
 # 디버그용 docker compose 작성
 vim docker-compose.debug.yml 
@@ -73,41 +75,6 @@ vim .vscode/launch.json
 }
 """
 
-vim .vscode/tasks.json
-"""
-{
-  "tasks": [
-    {
-      "type": "docker-run",
-      "label": "docker-run: debug",
-      "dependsOn": [
-          "docker-build"
-      ],
-      "python": {
-          "args": [
-              "runserver",
-              "0.0.0.0:8000",
-              "--nothreading",
-              "--noreload"
-          ],
-          "file": "manage.py"
-      }
-    },
-    {
-      "type": "docker-build",
-      "label": "docker-build",
-      "platform": "python",
-      "dockerBuild": {
-          "tag": "djangopollapp:latest",
-          "dockerfile": "${workspaceFolder}/Dockerfile",
-          "context": "${workspaceFolder}",
-          "pull": true
-      }
-    }
-  ]
-}
-"""
-
 # Docker compose 실행
 docker-compose -f docker-compose.debug.yml up -d --build
 
@@ -143,5 +110,3 @@ paginator = Paginator(all_polls, 3)  # Show 6 contacts per page
 """
 
 # 브라우저에서 Poll 리스트 갯수 확인 
-
-
