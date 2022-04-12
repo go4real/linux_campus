@@ -10,11 +10,13 @@ import (
 	"syscall"
 )
 
-// docker            run image <CMD> <ARG>
+// docker           run image <CMD> <ARG>
 // go run main.go   run       <CMD> <ARG>
 
 // Step6: cgroup을 사용하여 컨테이너 내 process 갯수 제한.
-//        실습으로 fork bomb 실행
+// 실습
+// $ go run . run /bin/sh
+// $ :(){ :|:& };:
 
 func main() {
 	switch os.Args[1] {
@@ -23,7 +25,7 @@ func main() {
 	case "child":
 		child()
 	default:
-		panic("bad command")
+		os.Exit(1)
 	}
 }
 
@@ -35,8 +37,7 @@ func run() {
 	cmd.Stdout = os.Stdout
 
 	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags:   syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWNS,
-		Unshareflags: syscall.CLONE_NEWNS,
+		Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWNS,
 	}
 
 	cmd.Run()
@@ -49,9 +50,10 @@ func child() {
 
 	syscall.Sethostname([]byte("container"))
 
-	syscall.Chroot("/tmp/alpine")
+	syscall.Chroot("/tmp/ubuntu")
 	syscall.Chdir("/")
 	syscall.Mount("proc", "proc", "proc", 0, "")
+	defer syscall.Unmount("proc", 0)
 
 	cmd := exec.Command(os.Args[2], os.Args[3:]...)
 	cmd.Stderr = os.Stderr
@@ -60,7 +62,6 @@ func child() {
 
 	must(cmd.Run())
 
-	syscall.Unmount("proc", 0)
 }
 
 func cg() {
@@ -68,7 +69,6 @@ func cg() {
 	pids := filepath.Join(cgroups, "pids")
 	os.Mkdir(filepath.Join(pids, "linux_campus"), 0755)
 	must(ioutil.WriteFile(filepath.Join(pids, "linux_campus/pids.max"), []byte("20"), 0700))
-	// Removes the new cgroup in place after the container exits
 	must(ioutil.WriteFile(filepath.Join(pids, "linux_campus/notify_on_release"), []byte("1"), 0700))
 	must(ioutil.WriteFile(filepath.Join(pids, "linux_campus/cgroup.procs"), []byte(strconv.Itoa(os.Getpid())), 0700))
 }

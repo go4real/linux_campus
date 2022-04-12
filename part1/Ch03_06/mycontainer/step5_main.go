@@ -20,7 +20,7 @@ func main() {
 	case "child":
 		child()
 	default:
-		panic("bad command")
+		os.Exit(1)
 	}
 }
 
@@ -32,11 +32,10 @@ func run() {
 	cmd.Stdout = os.Stdout
 
 	cmd.SysProcAttr = &syscall.SysProcAttr{
-		Cloneflags:   syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWNS,
-		Unshareflags: syscall.CLONE_NEWNS,
+		Cloneflags: syscall.CLONE_NEWUTS | syscall.CLONE_NEWPID | syscall.CLONE_NEWNS,
 	}
 
-	cmd.Run()
+	must(cmd.Run())
 }
 
 func child() {
@@ -46,16 +45,15 @@ func child() {
 	syscall.Sethostname([]byte("container"))
 
 	/* 루트 파일시스템 다운로드
-	https://hub.docker.com/_/alpine
-	--> https://github.com/alpinelinux/docker-alpine/blob/d44f831f0e99ace2b6d9d59b9123de27fd061a0f/x86_64/Dockerfile
-	# https://github.com/alpinelinux/docker-alpine/raw/d44f831f0e99ace2b6d9d59b9123de27fd061a0f/x86_64/alpine-minirootfs-3.15.3-x86_64.tar.gz
-	# mkdir /tmp/alpine
-	# tar zxf alpine-minirootfs-3.15.3-x86_64.tar.gz -C /tmp/alpine
+	# https://github.com/tianon/docker-brew-ubuntu-core/raw/88ba31584652db8b96a29849ea2809d99ce3cc31/focal/ubuntu-focal-oci-amd64-root.tar.gz
+	# mkdir /tmp/ubuntu
+	# tar zxf ubuntu-focal-oci-amd64-root.tar.gz -C /tmp/ubuntu
 	*/
 	// 루트 파일시스템 변경
-	syscall.Chroot("/tmp/alpine")
-	syscall.Chdir("/")
-	syscall.Mount("proc", "proc", "proc", 0, "")
+	// syscall.Chroot("/tmp/ubuntu")
+	// syscall.Chdir("/")
+	// syscall.Mount("proc", "proc", "proc", 0, "")
+	// defer syscall.Unmount("proc", 0)
 
 	cmd := exec.Command(os.Args[2], os.Args[3:]...)
 	cmd.Stderr = os.Stderr
@@ -64,7 +62,6 @@ func child() {
 
 	must(cmd.Run())
 
-	syscall.Unmount("proc", 0)
 }
 
 func must(err error) {

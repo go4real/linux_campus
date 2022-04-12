@@ -1,11 +1,11 @@
 # 프로젝트 디렉토리 생성
-mkdir -p ~/projects/hello
+mkdir -p ~/projects/box
 
 # 프로젝트 초기화. Go 모듈 생성
-cd ~/projects/hello
-go mod init example/hello
+cd ~/projects/box
+go mod init example/box
 
-# hello.go 파일 작성
+# main.go 파일 작성
 """
 package main
 
@@ -23,12 +23,13 @@ go run .
 """
 package main
 
-import "fmt"
-
-import "rsc.io/quote"
+import (
+    "fmt"
+    "rsc.io/quote"
+)
 
 func main() {
-    fmt.Println(quote.Go())
+    fmt.Println(quote.Hello())
 }
 """
 
@@ -38,4 +39,41 @@ go mod tidy
 # hello 프로그램 실행
 go run .
 
+# 동시성 프로그램 작성해보기
+"""
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func readword(ch chan string) {
+	fmt.Println("Type a word, then hit Enter.")
+	var word string
+	fmt.Scanf("%s", &word)
+	ch <- word
+}
+
+func printchar() {
+	for {
+		fmt.Printf(".")
+		time.Sleep(2 * time.Second)
+	}
+}
+
+func main() {
+    defer fmt.Println("===== BYE..")
+	go printchar()
+
+	ch := make(chan string)
+	go readword(ch)
+    
+	select {
+	case word := <-ch:
+		fmt.Println("\nReceived: ", word)
+	}
+}
+
+""" 
 

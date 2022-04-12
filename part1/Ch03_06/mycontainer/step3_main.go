@@ -7,17 +7,20 @@ import (
 	"syscall"
 )
 
-// docker            run image <CMD> <ARG>
+// docker           run image <CMD> <ARG>
 // go run main.go   run       <CMD> <ARG>
 
 // Step3: 새로운 UTS 설정 추가. Clone flag 추가 NEW UTS namespace. hostname 수동 변경 실습.
+// 실습
+// $ go run . run /bin/sh
+// $ hostname box
 
 func main() {
 	switch os.Args[1] {
 	case "run":
 		run()
 	default:
-		panic("bad command")
+		os.Exit(1)
 	}
 }
 
@@ -32,7 +35,7 @@ func run() {
 		Cloneflags: syscall.CLONE_NEWUTS,
 	}
 
-	cmd.Run()
+	must(cmd.Run())
 }
 
 func must(err error) {

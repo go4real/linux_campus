@@ -6,17 +6,17 @@ import (
 	"os/exec"
 )
 
-// docker            run image <CMD> <ARG>
+// docker           run image <CMD> <ARG>
 // go run main.go   run       <CMD> <ARG>
 
-// Step2: 새로운 프로세스에서 명령어 실행
+// Step2: 새로운 프로세스에서 명령어 실행  예) ls -l
 
 func main() {
 	switch os.Args[1] {
 	case "run":
 		run()
 	default:
-		panic("bad command")
+		os.Exit(1)
 	}
 }
 
@@ -28,10 +28,4 @@ func run() {
 	cmd.Stdout = os.Stdout
 
 	cmd.Run()
-}
-
-func must(err error) {
-	if err != nil {
-		panic(err)
-	}
 }

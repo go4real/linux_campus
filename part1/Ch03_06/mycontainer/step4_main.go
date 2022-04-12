@@ -7,10 +7,12 @@ import (
 	"syscall"
 )
 
-// docker            run image <CMD> <ARG>
+// docker           run image <CMD> <ARG>
 // go run main.go   run       <CMD> <ARG>
 
-// Step4: 컨테이너 환경 시작시 호스트명을 container로 변경. (예, root@ip-172-31-4-84:/home/ubuntu# --> root@container:/home/ubuntu# )
+// Step4: 컨테이너 환경 시작시 호스트명을 container로 변경.
+// $ go run . run /bin/sh
+// $ hostname
 
 func main() {
 	switch os.Args[1] {
@@ -19,7 +21,7 @@ func main() {
 	case "child":
 		child()
 	default:
-		panic("bad command")
+		os.Exit(1)
 	}
 }
 
@@ -35,7 +37,7 @@ func run() {
 		Cloneflags: syscall.CLONE_NEWUTS,
 	}
 
-	cmd.Run()
+	must(cmd.Run())
 }
 
 func child() {
@@ -49,7 +51,7 @@ func child() {
 	cmd.Stdin = os.Stdin
 	cmd.Stdout = os.Stdout
 
-	cmd.Run()
+	must(cmd.Run())
 }
 
 func must(err error) {
