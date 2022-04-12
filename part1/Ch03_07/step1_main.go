@@ -13,7 +13,7 @@ import (
 // docker           run image <CMD> <ARG>
 // go run main.go   run       <CMD> <ARG>
 
-// Step6: cgroup을 사용하여 컨테이너 내 process 갯수 제한.
+// Step1: cgroup을 사용하여 컨테이너 내 process 갯수 제한.
 // 실습
 // $ go run . run /bin/sh
 // $ :(){ :|:& };:
