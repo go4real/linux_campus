@@ -1,0 +1,5 @@
+
+copilot pipeline init
+
+git add copilot/ && git commit -m "Adding pipeline artifacts" && git push
+
