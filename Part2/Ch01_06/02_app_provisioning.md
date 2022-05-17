@@ -22,13 +22,6 @@ image:
   location: postgres
   port: 5432    # 공개할 포트정보 추가
 ...
-
-variables:                    # Pass environment variables as key value pairs.
-  POSTGRES_DB: poll
-  POSTGRES_USER: fast
-  POSTGRES_PASSWORD: 1234qwer
-...
-
 ```
 
 3. dev 환경 생성
@@ -44,7 +37,37 @@ copilot env init
 ```
 copilot deploy
 ```
-+ 웹 콘솔에서 서비스 상태 확인 
-
++ AWS Console에서 배포 상태 확인
++ 오류 확인 : Error: Database is uninitialized and superuser password is not specified.	
 
 <br/>
+
++ ctrl+c로 copilot 실행 종료
+
+5. Database 초기 실행 정보 설정
++ copilot/poll-db/manifest.yml
+```
+...
+variables:                    # Pass environment variables as key value pairs.
+  POSTGRES_DB: poll
+  POSTGRES_USER: fast
+  POSTGRES_PASSWORD: 1234qwer
+...
+```
+
+6. deploy 실행 
+```
+copilot deploy
+# ✘ execute svc deploy: deploy service poll-db to environment dev: deploy service: stack poll-app-dev-poll-db is currently being updated and cannot be deployed to
+```
+
+7. Circuitbreaker 에서 기본 서비스 시작 재시도 횟수 10번 실패
++ 수분 이상 소요
+
+8. 배포작업 자동 롤백 및 CloudFormation 종료 
+
+9. 다시 deploy 진행
+```
+copilot deploy
+```
++ 서비스 배포 완료 확인 
