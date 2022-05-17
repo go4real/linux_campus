@@ -58,13 +58,13 @@ copilot init
 # Dockerfile: ./Dockerfile.backend
 ```
 
-5. 환경 변수 설정
+5. 포트 정보 추가 및 데이터베이스 접속을 위한 환경 변수 설정
 + copilot/poll-backend/manifest.yml
 ```
 ...
 image:
   # Docker build arguments. For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/backend-service/#image-build
-  build: Dockerfile.django
+  build: Dockerfile.backend
   # Port exposed through your container to route traffic to it.
   port: 8000   # 포트정보 추가
 
