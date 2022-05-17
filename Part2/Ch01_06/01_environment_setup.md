@@ -4,6 +4,12 @@
 ```
 curl -Lo copilot https://github.com/aws/copilot-cli/releases/latest/download/copilot-linux && chmod +x copilot && sudo mv copilot /usr/local/bin/copilot && copilot --help
 ```
++ copilot 자동 완성 기능 설정
+```
+source <(copilot completion bash)
+copilot completion bash > copilot.sh
+sudo mv copilot.sh /etc/bash_completion.d/copilot
+```
 
 2. AWS EC2에 적용할 IAM role 생성 및 적용
 
