@@ -44,7 +44,7 @@ copilot env init
 ```
 copilot deploy
 ```
++ 웹 콘솔에서 서비스 상태 확인 
+
 
 <br/>
-
-+ 수분 소요
