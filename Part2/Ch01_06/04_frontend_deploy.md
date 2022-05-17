@@ -1,8 +1,8 @@
-# frontend 서비스 구성
+## frontend 서비스 구성
 
-# nginx 설정에 환경 변수 사용을 위해 template 사용
-# nginx/config/nginx.conf 내용 수정
-"""
+1. nginx 설정에 환경 변수 사용을 위해 template 사용
++ nginx/config/nginx.conf 내용 수정
+```
 events {
   worker_connections  4096;  ## Default: 1024
 }
@@ -14,10 +14,10 @@ http {
     include /etc/nginx/conf.d/*.conf;
     include /etc/nginx/sites-enabled/*;
 }
-"""
+```
 
-# nginx/templates/default.conf.template 파일 생성
-"""
+2. nginx/templates/default.conf.template 파일 생성
+```
 server {
     listen      80;
     server_name localhost; # IP 또는 FQDN으로 변경. 실습에서는 AWS 콘솔에서 IP 확인
@@ -37,10 +37,10 @@ server {
         proxy_set_header        Host $host;
     }
 }
-"""
+```
 
-# 프로젝트 루트 위치에 Dockerfile.frontend 파일 생성
-"""
+3. 프로젝트 루트 위치에 Dockerfile.frontend 파일 생성
+```
 FROM nginx
 COPY nginx/templates /etc/nginx/templates/
 COPY nginx/config/nginx.conf /etc/nginx/nginx.conf
@@ -49,18 +49,20 @@ COPY static /data/static
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
-"""
+```
 
-# Poll frontend 서비스 생성
+4. Poll frontend 서비스 생성
+```
 copilot init
 
 # Workload type: Load Balanced Web Service
 # Service name: poll-frontend
 # Dockerfile: ./Dockerfile.frontend
+```
 
-# ELB 헬스체크를 지원하기 위해 헬스체크용 미들웨어 구성
-# 1. polls/middleware.py 파일 생성
-"""
+5. ELB 헬스체크를 지원하기 위해 헬스체크용 미들웨어 구성
+- polls/middleware.py 파일 생성
+```
 from django.http import HttpResponse
 
 
@@ -73,50 +75,48 @@ class HealthCheckMiddleware:
             return HttpResponse("ok")
         response = self.get_response(request)
         return response
-"""
+```
 
-# 2. pollme/settings.py 수정
-"""
+- pollme/settings.py 수정
+```
 MIDDLEWARE = [
     'polls.middleware.HealthCheckMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
 ...
-"""
+```
 
-# poll-frontend 서비스에 health check 경로 설정
-"""
+6. poll-frontend 서비스에 health check 경로 설정
+```
 http:
   # Requests to this path will be forwarded to your service.
   # To match all requests you can use the "/" path.
   path: '/'
   # You can specify a custom health check path. The default is "/".
   healthcheck: '/health'
-"""
+```
 
-# Poll frontend 서비스 배포
+7. Poll frontend 서비스 배포
 copilot deploy
 
-# Healthcheck 미들웨어 설명 (수업내용 참고)
 
-# AWS Web Console에서 Poll frontend 서비스 배포 상태 확인 
-# 400 오류 확인
-# --> 트러블 슈팅
+8. AWS Web Console에서 Poll frontend 서비스 배포 상태 확인 
++ 400 오류 확인 --> 트러블 슈팅
 
-# 배포된 Poll 앱 확인 
-# Invalid HTTP_HOST header 오류 확인
-# --> 트러블 슈팅
+9. 배포된 Poll 앱 확인 
++ Invalid HTTP_HOST header 오류 확인 --> 트러블 슈팅
 
-# pollme/settings.py 수정
-"""
+10. pollme/settings.py 수정
+```
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
 ALLOWED_HOSTS = ['.elb.amazonaws.com']
-"""
+```
 
-# Poll backend 서비스 빌드/배포
+11. Poll backend 서비스 빌드/배포
 copilot deploy
 
-# 배포된 Poll 앱 확인 
-# 테스트: 회원 가입 및 로그인 
+12. Test
++ 배포된 Poll 앱 확인 
++ 테스트: 회원 가입 및 로그인 

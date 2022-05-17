@@ -1,7 +1,7 @@
-# backend 서비스 구성
+## backend 서비스 구성
 
-# 프로젝트 루트 위치에 Dockerfile.backend 파일 생성
-"""
+1. 프로젝트 루트 위치에 Dockerfile.backend 파일 생성
+```
 FROM python:3.8-slim-buster
 
 ENV PYTHONUNBUFFERED 1
@@ -18,11 +18,11 @@ COPY . .
 
 EXPOSE 8000
 ENTRYPOINT [ "sh", "./docker-entrypoint.sh" ]
-"""
+```
 
-# 프로젝트 루트 위치에 docker-entrypoint.sh 파일 생성
-# 앱 실행 전에 스키마 변경 내용을 반영하는 migrate 커맨드 실행
-"""
+2. 프로젝트 루트 위치에 docker-entrypoint.sh 파일 생성
++ 앱 실행 전에 스키마 변경 내용을 반영하는 migrate 커맨드 실행
+```
 #!/bin/bash
 
 # Apply database migrations
@@ -32,11 +32,11 @@ python manage.py migrate
 # Start server
 echo "Starting server"
 gunicorn --bind 0.0.0.0:8000 --workers 3 pollme.wsgi:application
-"""
+```
 
-# Database 엔드포인트 설정
-# pollme/settings.py
-"""
+3. Database 엔드포인트 설정
++ pollme/settings.py
+```
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -48,17 +48,20 @@ DATABASES = {
         'PORT': '5432',
     }
 }
-"""
+```
 
-# Poll backend 서비스 생성
+4. Poll backend 서비스 생성
+```
 copilot init
 # Workload type: Backend Service
 # Service name: poll-backend
 # Dockerfile: ./Dockerfile.backend
+```
 
-# 환경 변수 설정
-# copilot/poll-backend/manifest.yml
-"""
+5. 환경 변수 설정
++ copilot/poll-backend/manifest.yml
+```
+...
 image:
   # Docker build arguments. For additional overrides: https://aws.github.io/copilot-cli/docs/manifest/backend-service/#image-build
   build: Dockerfile.django
@@ -73,11 +76,11 @@ variables:                    # Pass environment variables as key value pairs.
   POSTGRES_PASSWORD: 1234qwer
 
 ....
-"""
+```
 
-# Poll backend 서비스 배포
+6. Poll backend 서비스 배포
 copilot deploy
 
-# AWS Web Console에서 Poll backend 서비스 배포 상태 확인 
+7. AWS Web Console에서 Poll backend 서비스 배포 상태 확인 
 
 
