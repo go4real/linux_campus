@@ -1,6 +1,6 @@
 ### 프로젝트 리포지토리: https://github.com/go4real/Django-Poll-App.git
 <br/><br/>
-1. ECS 앱 생성  *프로젝트 루트에서 실행
+1. ECS 앱 생성  __프로젝트 루트에서 실행__
 ```
 copilot init
 # Application name: PollApp
