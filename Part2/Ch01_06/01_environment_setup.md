@@ -21,7 +21,7 @@ unzip awscliv2.zip
 sudo ./aws/install
 ```
 
-# 4. AWS CLI 설정  (ap-northeast-2)
+4. AWS CLI 설정  (ap-northeast-2)
 ```
 aws configure
 ```
@@ -38,6 +38,7 @@ newgrp docker   # vs remote server 재시작 또는 sudo reboot
 6. Git에서 새로 코드를 받으시는 분들
 ```
 git clone https://github.com/go4real/Django-Poll-App.git
-git checkout ecs-base
+cd Django-Poll-App
+git checkout dev-release
 ```
 
