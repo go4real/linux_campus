@@ -3,7 +3,7 @@
 1. ECS 앱 생성  *프로젝트 루트에서 실행
 ```
 copilot init
-# Application name: poll-app
+# Application name: PollApp
 
 ## poll-db 서비스 생성
 # Workload type: Backend Service
