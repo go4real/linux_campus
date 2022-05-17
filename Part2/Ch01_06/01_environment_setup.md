@@ -39,6 +39,6 @@ newgrp docker   # vs remote server 재시작 또는 sudo reboot
 ```
 git clone https://github.com/go4real/Django-Poll-App.git
 cd Django-Poll-App
-git checkout dev-release
+git checkout ecs-base
 ```
 
