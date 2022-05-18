@@ -27,6 +27,8 @@ def polls_list(request):
 
 
 5. ab 테스트 실행
+```
 ab -n 5000 -c 25 http://{ELB_URL}/polls/list
+```
 
 6. AWS CloudWatch에서 모니터링된 값 확인 
