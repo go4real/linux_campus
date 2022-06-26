@@ -1,6 +1,6 @@
 # systemd 실습 
 1. 실습용 스크립트 파일 작성 
-+ sudo vim /usr/local/bin/my-uptime.sh
++ sudo vim /usr/local/bin/my-uptime
 ```
 #!/bin/sh
 echo "Uptime: `uptime`" >> /tmp/uptime.log
@@ -15,7 +15,7 @@ echo "Uptime: `uptime`" >> /tmp/uptime.log
 Description=systemd practice.
 
 [Service]
-ExecStart=/bin/sh /usr/local/bin/my-uptime.sh
+ExecStart=/bin/sh /usr/local/bin/my-uptime
 
 [Install]
 WantedBy=multi-user.target
