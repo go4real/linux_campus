@@ -1,6 +1,6 @@
 # systemd 실습 
 1. 실습용 스크립트 파일 작성 
-+ vim /usr/local/bin/my-uptime.sh
++ sudo vim /usr/local/bin/my-uptime.sh
 ```
 #!/bin/sh
 echo "Uptime: `uptime`" >> /tmp/uptime.log
@@ -9,7 +9,7 @@ echo "Uptime: `uptime`" >> /tmp/uptime.log
 <br/>
 
 2. systemd 서비스 생성 -> service 타입의 Unit파일 생성
-+ vim /etc/systemd/system/my-uptime.service 
++ sudo vim /etc/systemd/system/my-uptime.service 
 ```
 [Unit]
 Description=systemd practice.
