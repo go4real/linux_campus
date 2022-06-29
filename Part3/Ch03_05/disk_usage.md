@@ -43,6 +43,5 @@ du -h -d 1 /home/ubuntu | sort -h -r
 #### 루트 디렉토리의 사용량 조회 결과를 크기 역순으로 정렬
 ```
 du -h -d 1 / 2> /dev/null | sort -h -r | head -n 20
-cd /usr
-du -h -d 3 2> /dev/null | sort -h -r | head -n 20
+du -h -d 2 /var 2> /dev/null | sort -h -r | head -n 20
 ```
