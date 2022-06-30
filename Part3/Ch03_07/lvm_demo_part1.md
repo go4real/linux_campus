@@ -14,8 +14,8 @@
 3. EC2 터미널에 접속해서 디바이스 상태 및 파일 시스템 존재 여부 확인
 ```
 lsblk
-sudo file -s /dev/xvdg
-# /dev/xvdg: data          <- 파일시스템이 없는 경우
+sudo file -s /dev/xvdf
+# /dev/xvdf: data          <- 파일시스템이 없는 경우
 # sudo file -s /dev/xvda1  <- 파일시스템이 있는 경우 
 ```
 
@@ -23,7 +23,7 @@ sudo file -s /dev/xvdg
 
 4. 물리 볼륨을 생성 및 확인
 ```
-sudo pvcreate /dev/xvdg
+sudo pvcreate /dev/xvdf
 sudo pvs
 ```
 
@@ -31,7 +31,7 @@ sudo pvs
 
 5. 볼륨 그룹 생성 및 볼륨 그룹에 물리 볼륨 추가
 ```
-sudo vgcreate Data /dev/xvdg
+sudo vgcreate Data /dev/xvdf
 sudo vgs
 ```
 
