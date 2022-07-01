@@ -34,10 +34,14 @@ USER app
 CMD ["sleep", "infinity"]
 ```
 
+<br/>
+
 5. 컨테이너 이미지 생성
 ```
 docker build --tag user_test .
 ```
+
+<br/>
 
 6. 컨테이너 실행 및 사용자 정보 확인
 ```
