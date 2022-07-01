@@ -34,7 +34,12 @@ USER app
 CMD ["sleep", "infinity"]
 ```
 
-3. 컨테이너 실행 및 사용자 정보 확인
+5. 컨테이너 이미지 생성
+```
+docker build --tag user_test .
+```
+
+6. 컨테이너 실행 및 사용자 정보 확인
 ```
 docker stop user_test
 docker run --rm -d --name user_test user_test
