@@ -47,7 +47,7 @@ sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
 # some PAM modules and threads)
 ChallengeResponseAuthentication yes
 
-AuthenticationMethods publickey,keyboard-interactive
+AuthenticationMethods publickey,password publickey,keyboard-interactive
 ```
 
 8. ssh 서비스 재시작
