@@ -42,10 +42,12 @@ users:
 
 5. 인스턴스 시작
 
-6. 새로운 개인키로 서버 접근
+6. 새로운 개인키로 서버 접근 및 cloud-init 실행 확인
 ```
 ssh -i ~/linux_campus/new-ec2-key.pem ubuntu@IP_ADDRESS
+journalctl -b 0 -u cloud-init
 ```
+
 7. 인스턴스 중지
 
 8. 사용자 데이터 삭제
