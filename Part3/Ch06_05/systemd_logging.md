@@ -89,3 +89,21 @@ sudo systemctl restart hello
 curl localhost:8000
 cat /var/log/hello.log
 ```
+
+9. 로그 로테이트 설정
++ sudo vim /etc/logrotate.d/hello
+```
+/var/log/hello.log {
+  daily
+  rotate 14
+  missingok
+  notifempty
+  copytruncate
+  compress
+  delaycompress
+}
+```
+
+## [실습정리] 자원삭제
+
+1. 인스턴스 삭제
