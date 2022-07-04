@@ -7,7 +7,7 @@
 
 2. boto3 및 ansible aws 플러그인 설치
 ```
-sudo pip install boto3
+sudo pip3 install boto3
 ansible-galaxy collection install amazon.aws
 ```
 
