@@ -99,7 +99,7 @@ ansible all -m ping
         home: "/home/fast"
         comment: "Ansible demo user"
 
-    - name: Disable SSH password authentication
+    - name: Enable SSH password authentication
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         regexp: '^PasswordAuthentication'
