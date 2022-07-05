@@ -24,7 +24,7 @@ ip link set br0 up
 # 브릿지 네트워크에 IP 설정
 ip addr add 192.168.2.1/24 dev br0
 ip addr
-ping -c 192.168.2.1
+ping -c 2 192.168.2.1
 
 # veth*, ceth*를 위한 veth 페어 생성
 ip link add veth0 type veth peer name ceth0
