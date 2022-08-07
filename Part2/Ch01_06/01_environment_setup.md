@@ -12,6 +12,7 @@ sudo mv copilot.sh /etc/bash_completion.d/copilot
 ```
 
 2. AWS EC2에 적용할 IAM role 생성 및 적용
++ 강의 내용 참고
 
 3. AWS CLI 설치
 + https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html
@@ -22,7 +23,8 @@ unzip awscliv2.zip
 sudo ./aws/install
 ```
 
-4. AWS CLI 설정  (ap-northeast-2)
+4. AWS CLI 설정 
++ Default region name 만 ap-northeast-2로 지정
 ```
 aws configure
 ```
