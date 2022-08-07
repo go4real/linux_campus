@@ -16,6 +16,7 @@ sudo mv copilot.sh /etc/bash_completion.d/copilot
 3. AWS CLI 설치
 + https://docs.aws.amazon.com/ko_kr/cli/latest/userguide/getting-started-install.html
 ```
+sudo apt install -y unzip
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 unzip awscliv2.zip
 sudo ./aws/install
