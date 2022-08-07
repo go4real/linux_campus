@@ -30,8 +30,13 @@ copilot env init
 # Environment name: dev
 # Credential source: [profile default]
 # 다른 항목은 기본설정 사용
+
 ```
 + 3분 이상 시간 소요  --> AWS Web Console에서 인프라 생성 내용 확인 (ECS, CloudFormation 등)
++ **버전에 따라 아래 명령을 추가로 실행하여 dev 환경을 프로비저닝**
+```
+copilot env deploy --name dev
+```
 
 4. poll-db 서비스 배포 
 ```
