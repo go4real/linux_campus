@@ -14,7 +14,7 @@ sudo apt install -y fio
  + 10개의 job을 생성해서, 1M 크기로 연속 쓰기 진행
  ```
  sudo fio --name=write_test \
- --filename=/dev/xvdb --filesize=100G \
+ --filename=/dev/nvme1n1 --filesize=100G \
  --time_based --ramp_time=2s --runtime=1m \
  --ioengine=libaio --direct=1 --verify=0 --randrepeat=0 \
  --bs=1M --iodepth=64 --rw=write --numjobs=10 --offset_increment=10G
@@ -27,7 +27,7 @@ sudo apt install -y fio
  + 4K 크기로 램덤 읽기 수행
 ```
 sudo fio --name=read_test \
---filename=/dev/xvdb --filesize=100G \
+--filename=/dev/nvme1n1 --filesize=100G \
 --time_based --ramp_time=2s --runtime=1m \
 --ioengine=libaio --direct=1 --verify=0 --randrepeat=0 \
 --bs=4K --iodepth=256 --rw=randread
