@@ -17,6 +17,7 @@ http {
 ```
 
 2. nginx/templates/default.conf.template 파일 생성
+ + 디렉토리 생성이 필요한 경우 터미널 창에서 mkdir nginx/templates 수행
 ```
 server {
     listen      80;
