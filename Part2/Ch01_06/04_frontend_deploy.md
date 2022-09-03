@@ -88,6 +88,7 @@ MIDDLEWARE = [
 ```
 
 6. poll-frontend 서비스에 health check 경로 설정
+ + copilot/poll-frontend/manifest.yml 내용 수정
 ```
 http:
   # Requests to this path will be forwarded to your service.
