@@ -29,7 +29,7 @@ WantedBy=multi-user.target
 
 3. systemd 데몬 리로드 (systemd 목록 수정시 항상 실행)
 ```
-systemctl daemon-reload
+sudo systemctl daemon-reload
 ```
 <br/>
 
