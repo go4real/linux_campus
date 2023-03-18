@@ -35,13 +35,13 @@ sudo systemctl daemon-reload
 
 4. uptime-logger.service 시작
 ```
-sudo systemctl start my_uptime.service
+sudo systemctl start uptime-logger.service
 ```
 <br/>
 
 5. 시작 서비스에 my_uptime.service 등록 
 ```
-sudo systemctl enable my_uptime.service
+sudo systemctl enable uptime-logger.service
 ```
 <br/>
 
@@ -53,5 +53,5 @@ sudo reboot
 
 7. 서비스 상태 확인
 ```
-sudo systemctl status my_uptime.service
+sudo systemctl status uptime-logger.service
 ```
